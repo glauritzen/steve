@@ -1,0 +1,46 @@
+@client.event
+async def on_ready():
+    await client.change_presence(status=discord.Status.idle, activity=discord.Game('Crying for help!'))
+    print('bot ready')
+
+
+@client.event
+async def on_member_join(member):
+    print(f'{member} connected to da server')
+
+@client.event
+async def on_member_remove(member):
+    print(f'{member} ran away:(')
+
+@client.command()
+async def oof(ctx):
+    await ctx.send('oof')
+
+@client.command()
+async def wtf(ctx, amount=5):
+    await ctx.channel.purge(limit=amount)
+
+@client.command()
+async def wait(ctx, member : discord.Member, *, reason=None, amount=5):
+    await member.kick(reason=reason)
+    await ctx.channel.purge(limit=amount)
+    await ctx.send(f'gav {member.mention} en pause!')
+
+@client.command()
+async def fuc(ctx, member : discord.Member, *, reason=None, amount=5):
+    await member.ban(reason=reason)
+    await ctx.channel.purge(limit=amount)
+    await ctx.send(f'fuckede {member.mention} op!')
+
+@client.command()
+async def unfuck(ctx, *, member):
+    banned_users = await ctx.guild.bans()
+    member_name, member_discriminator = member.split('#')
+
+    for ban_entry in banned_users:
+        user = ban_entry.user
+
+        if (user.name, user.discriminator) == (member_name, member_discriminator):
+            await ctx.guild.unban(user)
+            await ctx.send(f'unfuckede {user.menmtion}')
+            return
