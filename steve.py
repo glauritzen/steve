@@ -34,4 +34,14 @@ async def on_member_remove(member):
 async def clear(ctx, amount=5):
     await ctx.channel.purge(limit=amount)
 
+@client.command()
+async def join(ctx):
+    channel = ctx.author.voice.channel
+    await channel.connect()
+    
+@client.command()
+async def leave(ctx):
+    await ctx.voice_client.disconnect()
+    
+
 client.run(TOKEN)
